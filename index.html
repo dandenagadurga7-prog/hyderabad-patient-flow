@@ -1,0 +1,458 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hyderabad Patient Flow — no patient enquiry goes cold</title>
+  <meta name="description" content="Hyderabad Patient Flow builds three small things for diagnostic labs and mid-size hospitals in Hyderabad so every patient enquiry gets a second call.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* Palette — the only colours on this page */
+    :root {
+      --deep-teal: #0F6B6B;      /* accent: buttons, one word, rules, icons */
+      --soft-slate: #5A6B7A;     /* quiet lines, small labels, icons */
+      --charcoal-navy: #1C2B3A;  /* body text, dark surfaces */
+      --warm-cream: #FAF6F0;     /* page ground */
+      --line: #5A6B7A33;         /* Soft Slate at 20%, for hairlines only */
+      --measure: 62ch;
+      --page: 1140px;
+      --pad: 96px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: #FAF6F0;
+      color: #1C2B3A;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+      font-size: 18px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    h1, h2, h3 {
+      font-family: "Fraunces", Georgia, "Times New Roman", serif;
+      font-weight: 600;
+      letter-spacing: -0.015em;
+    }
+
+    a { color: inherit; }
+
+    img { max-width: 100%; height: auto; }
+
+    .wrap { max-width: var(--page); margin: 0 auto; padding: 0 28px; }
+
+    .sr-only {
+      position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+    }
+
+    /* ---------------- header ---------------- */
+
+    .site-header { padding: 26px 0; }
+
+    .site-header .wrap { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+
+    .brand { display: inline-flex; align-items: center; text-decoration: none; }
+
+    .brand img {
+      height: 44px;
+      width: auto;
+      display: block;
+      mix-blend-mode: multiply; /* the logo's white ground disappears into Warm Cream #FAF6F0 */
+    }
+
+    /* ---------------- hero ---------------- */
+
+    .hero { padding-top: 32px; }
+
+    .hero__text { max-width: 920px; padding-bottom: 56px; }
+
+    .hero h1 {
+      font-size: clamp(2.1rem, 6.4vw, 4.6rem);
+      line-height: 1.06;
+      text-wrap: balance;
+    }
+
+    .hero h1 .accent { color: #0F6B6B; }
+
+    .hero__lede {
+      margin-top: 26px;
+      font-size: clamp(1.05rem, 1.6vw, 1.32rem);
+      line-height: 1.6;
+      max-width: 56ch;
+      color: #1C2B3A;
+    }
+
+    .hero__cta { margin-top: 34px; }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: #0F6B6B; color: #FAF6F0;
+      font-weight: 600; font-size: 18px; line-height: 1;
+      padding: 17px 30px; border-radius: 999px;
+      text-decoration: none;
+      transition: transform .15s ease, opacity .15s ease;
+    }
+    .btn:hover { transform: translateY(-1px); opacity: .93; }
+
+    .btn--quiet {
+      background: transparent; color: #1C2B3A;
+      border: 1.5px solid #5A6B7A66;
+    }
+    .btn--quiet:hover { border-color: #0F6B6B; color: #0F6B6B; }
+
+    .hero__img {
+      display: block; width: 100%;
+      height: clamp(320px, 62vh, 640px);
+      object-fit: cover; object-position: 50% 28%;
+    }
+
+    /* ---------------- sections ---------------- */
+
+    .section { padding: var(--pad) 0; }
+    .section + .section { border-top: 1px solid var(--line); }
+
+    .section__label {
+      font-family: "Inter", sans-serif;
+      font-size: 13px; font-weight: 600;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: #5A6B7A;
+      margin-bottom: 18px;
+    }
+
+    .section h2 {
+      font-size: clamp(1.7rem, 3.2vw, 2.5rem);
+      line-height: 1.18;
+      max-width: 30ch;
+    }
+
+    .section__intro { margin-top: 18px; max-width: var(--measure); color: #5A6B7A; }
+
+    /* ---------------- what the front desk says ---------------- */
+
+    .frontdesk__lead {
+      font-family: "Fraunces", Georgia, serif;
+      font-size: clamp(1.25rem, 2.3vw, 1.85rem);
+      line-height: 1.4;
+      max-width: 34ch;
+      margin-bottom: 44px;
+    }
+
+    .quote-list { display: grid; gap: 26px; max-width: 46ch; }
+
+    .quote {
+      padding-left: 22px;
+      border-left: 3px solid #0F6B6B;
+      font-family: "Fraunces", Georgia, serif;
+      font-size: clamp(1.15rem, 2vw, 1.55rem);
+      line-height: 1.42;
+    }
+
+    .frontdesk__by { margin-top: 40px; color: #5A6B7A; font-size: 15px; }
+
+    /* ---------------- service cards ---------------- */
+
+    .cards {
+      margin-top: 52px;
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+    }
+
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.55);
+      padding: 34px 30px;
+      display: flex; flex-direction: column; gap: 16px;
+    }
+
+    .card__icon { color: #0F6B6B; }
+    .card__icon svg { display: block; width: 24px; height: 24px; }
+
+    .card h3 {
+      font-size: 1.32rem; line-height: 1.3; letter-spacing: -0.01em;
+    }
+
+    .card p { color: #1C2B3A; }
+
+    .price {
+      margin-top: 44px;
+      display: flex; flex-wrap: wrap; align-items: baseline; gap: 14px;
+      padding-top: 30px; border-top: 1px solid var(--line);
+    }
+
+    .price__num {
+      font-family: "Fraunces", Georgia, serif;
+      font-size: clamp(1.7rem, 3vw, 2.3rem);
+      color: #0F6B6B;
+    }
+
+    .price__note { color: #5A6B7A; }
+
+    /* ---------------- how it works ---------------- */
+
+    .steps { margin-top: 52px; display: grid; gap: 0; max-width: 60ch; }
+
+    .step {
+      display: flex; gap: 26px; align-items: flex-start;
+      padding: 28px 0;
+      border-top: 1px solid var(--line);
+    }
+    .step:last-child { border-bottom: 1px solid var(--line); }
+
+    .step__n {
+      flex: 0 0 auto;
+      width: 44px; height: 44px; border-radius: 50%;
+      border: 1.5px solid #0F6B6B; color: #0F6B6B;
+      display: flex; align-items: center; justify-content: center;
+      font-family: "Fraunces", Georgia, serif; font-size: 20px; line-height: 1;
+    }
+
+    .step p { font-size: 1.08rem; }
+
+    .steps__close { margin-top: 40px; color: #0F6B6B; font-weight: 500; }
+
+    /* ---------------- who I am ---------------- */
+
+    .about {
+      margin-top: 48px;
+      display: grid; grid-template-columns: 2fr 1fr; gap: 56px; align-items: start;
+    }
+
+    .about__name { display: flex; align-items: center; gap: 18px; margin-bottom: 28px; }
+
+    .about__profile {
+      width: 76px; height: 76px; border-radius: 50%;
+      object-fit: cover; flex: 0 0 auto;
+      border: 2px solid #0F6B6B33;
+    }
+
+    .about__name h3 { font-size: 1.5rem; }
+
+    .about__name span { display: block; font-family: "Inter", sans-serif; font-size: 15px; color: #5A6B7A; font-weight: 400; letter-spacing: 0; }
+
+    .about__text { max-width: var(--measure); }
+
+    .about__working img {
+      display: block; width: 100%; height: auto;
+      border-radius: 18px;
+    }
+
+    /* ---------------- contact ---------------- */
+
+    .contact { text-align: left; }
+
+    .contact h2 { max-width: 22ch; }
+
+    .contact__main { margin-top: 40px; }
+
+    .contact__links {
+      margin-top: 26px;
+      display: flex; flex-wrap: wrap; gap: 14px;
+    }
+
+    .contact__links .btn { font-size: 17px; padding: 15px 24px; }
+
+    .contact__links svg { width: 22px; height: 22px; }
+
+    .contact__note { margin-top: 30px; color: #5A6B7A; font-size: 15px; max-width: 52ch; }
+
+    /* ---------------- small screens ---------------- */
+
+    @media (max-width: 860px) {
+      :root { --pad: 56px; }
+      .wrap { padding: 0 20px; }
+      .cards { grid-template-columns: 1fr; gap: 18px; }
+      .about { grid-template-columns: 1fr; gap: 36px; }
+      .about__working { order: -1; }
+      .hero__img { height: clamp(240px, 52vh, 420px); }
+      .brand img { height: 36px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="#top" aria-label="Hyderabad Patient Flow, back to top">
+        <span class="sr-only">Hyderabad Patient Flow</span>
+        <img src="images/logo.png" alt="Hyderabad Patient Flow logo: a front desk with a tick beside the words Hyderabad Patient Flow" width="810" height="152">
+      </a>
+    </div>
+  </header>
+
+  <main id="top">
+
+    <!-- 1. first screen -->
+    <section class="hero">
+      <div class="wrap">
+        <div class="hero__text">
+          <h1>No patient <span class="accent">enquiry</span> goes cold again.</h1>
+          <p class="hero__lede">I build three small things for diagnostic labs and mid-size hospitals in Hyderabad so every enquiry gets a second call.</p>
+          <p class="hero__cta">
+            <a class="btn" href="https://cal.com/naga-durga-dande-8s7rux/20-minai-discovery-call-nagadurga">Book a 20 minute call</a>
+          </p>
+        </div>
+      </div>
+      <img class="hero__img" src="images/speaking.jpg" alt="Naga Durga Dande presenting the follow-up board to a lab manager" width="1800" height="1005">
+    </section>
+
+    <!-- 2. what the front desk says -->
+    <section class="section" id="front-desk">
+      <div class="wrap">
+        <p class="section__label">What the front desk says</p>
+        <p class="frontdesk__lead">Enquiries come to the front desk and stop there.</p>
+        <div class="quote-list">
+          <blockquote class="quote">Nobody calls the patient back a second time.</blockquote>
+          <blockquote class="quote">Reports sit ready while the patient keeps phoning to ask.</blockquote>
+          <blockquote class="quote">The ones who give up walk to the lab next door.</blockquote>
+        </div>
+        <p class="frontdesk__by">In the words of lab managers and front desk heads in Hyderabad.</p>
+      </div>
+    </section>
+
+    <!-- 3. what I build -->
+    <section class="section" id="services">
+      <div class="wrap">
+        <p class="section__label">Services</p>
+        <h2>What I build for you</h2>
+
+        <div class="cards">
+          <article class="card">
+            <span class="card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6 3h8l4 4v14H6z"/>
+                <path d="M14 3v4h4"/>
+                <path d="M9 14.5l1.6 1.6 3.4-3.4"/>
+              </svg>
+            </span>
+            <h3>Enquiry intake form with a reject branch</h3>
+            <p>It refuses bad entries at the counter so the front desk works from clean data.</p>
+          </article>
+
+          <article class="card">
+            <span class="card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="4" width="18" height="16" rx="2"/>
+                <path d="M3 9h18"/>
+                <path d="M9.5 9v11"/>
+              </svg>
+            </span>
+            <h3>Follow-up board for open enquiries</h3>
+            <p>The front desk opens it every morning and works the list until each patient is called back.</p>
+          </article>
+
+          <article class="card">
+            <span class="card__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="13" r="8"/>
+                <path d="M12 9.5V13l2.5 1.8"/>
+                <path d="M5 3.5L3 5.5"/>
+                <path d="M19 3.5l2 2"/>
+              </svg>
+            </span>
+            <h3>Morning health digest at 7</h3>
+            <p>A daily digest that keeps your name in front of the management.</p>
+          </article>
+        </div>
+
+        <p class="price">
+          <span class="price__num">Rs 45,000 one time</span>
+          <span class="price__note">Covers all three.</span>
+        </p>
+      </div>
+    </section>
+
+    <!-- 4. how it works -->
+    <section class="section" id="how">
+      <div class="wrap">
+        <p class="section__label">How it works</p>
+        <h2>Three steps, no surprises</h2>
+
+        <div class="steps">
+          <div class="step">
+            <span class="step__n" aria-hidden="true">1</span>
+            <p>I look at your front desk and your enquiry flow.</p>
+          </div>
+          <div class="step">
+            <span class="step__n" aria-hidden="true">2</span>
+            <p>I build the three things and hand them over.</p>
+          </div>
+          <div class="step">
+            <span class="step__n" aria-hidden="true">3</span>
+            <p>I stay on a monthly retainer to keep it running.</p>
+          </div>
+        </div>
+
+        <p class="steps__close">Fixed scope, fixed price, delivered in a week or two.</p>
+      </div>
+    </section>
+
+    <!-- 5. who I am -->
+    <section class="section" id="about">
+      <div class="wrap">
+        <p class="section__label">Who I am</p>
+        <h2>Built at the front desk, not in a boardroom</h2>
+
+        <div class="about">
+          <div class="about__body">
+            <div class="about__name">
+              <img class="about__profile" src="images/profile.jpg" alt="Naga Durga Dande" width="800" height="800">
+              <h3>Naga Durga Dande<span>Hyderabad Patient Flow</span></h3>
+            </div>
+            <p class="about__text">I kept meeting lab managers in Hyderabad who were losing patients to the lab next door, not because the work was bad, but because nobody called back. So I built three small things that fix that.</p>
+          </div>
+
+          <div class="about__working">
+            <img src="images/working.jpg" alt="Naga Durga Dande at a lab counter working the follow-up board on a laptop" width="1200" height="1607">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. contact -->
+    <section class="section contact" id="contact">
+      <div class="wrap">
+        <p class="section__label">Contact</p>
+        <h2>Let's talk about your front desk</h2>
+
+        <p class="contact__main">
+          <a class="btn" href="https://cal.com/naga-durga-dande-8s7rux/20-minai-discovery-call-nagadurga">Book a 20 minute call</a>
+        </p>
+
+        <div class="contact__links">
+          <a class="btn btn--quiet" href="https://wa.me/919010859702?text=Hi%20Hyderabad%20Patient%20Flow%2C%20I%20saw%20your%20page%20and%20wanted%20to%20ask%20about%20the%20enquiry%20follow-up%20system.">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M20 12a8 8 0 0 1-11.8 7L4 20l1.1-3.9A8 8 0 1 1 20 12z"/>
+            </svg>
+            Message me on WhatsApp
+          </a>
+
+          <!-- TODO: replace EMAIL_GOES_HERE with the real email address -->
+          <a class="btn btn--quiet" href="mailto:EMAIL_GOES_HERE?subject=Enquiry%20about%20the%20three%20things">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="5" width="18" height="14" rx="2"/>
+              <path d="M3.5 7l8.5 6 8.5-6"/>
+            </svg>
+            Email me
+          </a>
+        </div>
+
+        <p class="contact__note">Booking is fastest. WhatsApp works today.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    // If a picture is missing, hide it so the section keeps its words and closes up.
+    document.querySelectorAll("img").forEach(function (img) {
+      img.addEventListener("error", function () { img.style.display = "none"; });
+    });
+  </script>
+</body>
+</html>
